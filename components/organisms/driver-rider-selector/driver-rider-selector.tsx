@@ -1,5 +1,7 @@
 import { Text } from "@/components/atoms";
 import { ChoiceButton } from "@/components/molecules";
+import { useCaptureEvent } from "@/hooks/use-capture-event";
+import { useRouter } from "expo-router";
 import { useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
@@ -16,6 +18,8 @@ import CabinImage from "@/components/atoms/images/cabin.svg";
 
 export function DriverRiderSelector() {
   const theme = useTheme();
+  const router = useRouter();
+  const capture = useCaptureEvent();
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
 
@@ -60,14 +64,19 @@ export function DriverRiderSelector() {
             icon="steering"
             iconSet="material-community"
             label="Driver"
-            onPress={() => {}}
+            onPress={() => {
+              capture("driver_rider_driver_pressed", { screen: "driver-or-rider" });
+            }}
             accessibilityLabel="I am a driver"
           />
           <ChoiceButton
             testID="choice-button-rider"
             icon="airline-seat-recline-extra"
             label="Rider"
-            onPress={() => {}}
+            onPress={() => {
+              capture("driver_rider_rider_pressed", { screen: "driver-or-rider" });
+              router.push("/pickup");
+            }}
             accessibilityLabel="I am a rider"
           />
         </ButtonRow>

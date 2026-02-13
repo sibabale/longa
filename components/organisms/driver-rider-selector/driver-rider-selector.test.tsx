@@ -32,4 +32,11 @@ describe("DriverRiderSelector", () => {
     fireEvent.press(screen.getByRole("button", { name: "I am a driver" }));
     fireEvent.press(screen.getByRole("button", { name: "I am a rider" }));
   });
+
+  it("Rider button navigates to pickup page", () => {
+    const expoRouter = require("expo-router");
+    renderWithTheme(<DriverRiderSelector />);
+    fireEvent.press(screen.getByRole("button", { name: "I am a rider" }));
+    expect(expoRouter.useRouter().push).toHaveBeenCalledWith("/pickup");
+  });
 });

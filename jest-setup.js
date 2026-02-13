@@ -26,3 +26,24 @@ jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),
   setTag: jest.fn(),
 }));
+
+jest.mock('react-content-loader/native', () => {
+  const { View } = require('react-native');
+  return {
+    __esModule: true,
+    default: View,
+    Rect: View,
+    Circle: View,
+    Path: View,
+  };
+});
+
+const mockRouterPush = jest.fn();
+const mockRouterBack = jest.fn();
+
+jest.mock('expo-router', () => ({
+  useRouter: () => ({ back: mockRouterBack, push: mockRouterPush }),
+  router: { push: jest.fn(), back: jest.fn() },
+  useSegments: () => [],
+  usePathname: () => '/',
+}));

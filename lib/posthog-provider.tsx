@@ -16,7 +16,17 @@ function PostHogTrackScreen({ children }: { children: ReactNode }) {
     },
     [posthog]
   );
-  return <AnalyticsProvider trackScreen={trackScreen}>{children}</AnalyticsProvider>;
+  const capture = useCallback(
+    (event: string, properties?: Record<string, unknown>) => {
+      posthog?.capture(event, properties);
+    },
+    [posthog]
+  );
+  return (
+    <AnalyticsProvider trackScreen={trackScreen} capture={capture}>
+      {children}
+    </AnalyticsProvider>
+  );
 }
 
 export function PostHogProviderWrapper({ children }: PostHogProviderWrapperProps) {
@@ -30,10 +40,14 @@ export function PostHogProviderWrapper({ children }: PostHogProviderWrapperProps
     });
   }, []);
 
-  const noopTrackScreen = useCallback(() => {}, []);
+  const noop = useCallback(() => {}, []);
 
   if (!posthogClient) {
-    return <AnalyticsProvider trackScreen={noopTrackScreen}>{children}</AnalyticsProvider>;
+    return (
+      <AnalyticsProvider trackScreen={noop} capture={noop}>
+        {children}
+      </AnalyticsProvider>
+    );
   }
 
   return (

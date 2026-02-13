@@ -5,7 +5,8 @@
     "jsx": "react-native",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }

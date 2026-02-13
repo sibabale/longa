@@ -19,6 +19,8 @@ declare module 'styled-components/native' {
       tagline: string;
       arrow: string;
       surface: string;
+      skeletonBg: string;
+      skeletonFg: string;
     };
   }
 }

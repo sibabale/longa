@@ -9,6 +9,8 @@ export default function FlowLayout() {
       }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="driver-or-rider" />
+      <Stack.Screen name="destination" />
+      <Stack.Screen name="pickup" />
     </Stack>
   );
 }
