@@ -45,4 +45,23 @@ describe("RideDetailsPage", () => {
     ).toBeOnTheScreen();
     jest.useRealTimers();
   });
+
+  it("renders date time when selectedDateTime is provided", () => {
+    jest.useFakeTimers();
+    renderWithTheme(
+      <RideDetailsPage
+        pickupLocation="Sandton"
+        destinationName="Airport"
+        selectedDateTime="2025-02-14T15:30:00.000Z"
+        selectedIndex="0"
+      />
+    );
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    const datetimeEl = screen.getByTestId("ride-details-page-datetime");
+    expect(datetimeEl).toBeOnTheScreen();
+    expect(datetimeEl.props.children).toMatch(/Fri, Feb 14/);
+    jest.useRealTimers();
+  });
 });

@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from "react";
-import ContentLoader, { Circle, Rect } from "react-content-loader/native";
+import React, { useCallback, useEffect, useState } from "react";
+import ContentLoader, { Rect } from "react-content-loader/native";
+import { useRouter } from "expo-router";
 import { useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
 import { Text } from "@/components/atoms";
 
 import rideData from "@/components/organisms/location-search/data.json";
 
-import { Container, ContentSection, ImageSection } from "./ride-details.styles";
+import {
+  ButtonContainer,
+  Container,
+  ContentSection,
+  DoneButton,
+  DoneButtonLabel,
+  ImageSection,
+} from "./ride-details.styles";
 
 import WelcomeImage from "@/components/atoms/images/welcome.svg";
 
@@ -19,8 +28,30 @@ export type RideDetailsProps = {
   screenName?: string;
   pickupLocation?: string;
   destinationName?: string;
+  selectedDateTime?: string;
   selectedIndex?: number;
 };
+
+function formatDateTime(isoString?: string): string | null {
+  if (!isoString) return null;
+  try {
+    const date = new Date(isoString);
+    if (Number.isNaN(date.getTime())) return null;
+    const dateStr = date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+    const timeStr = date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return `${dateStr} at ${timeStr}`;
+  } catch {
+    return null;
+  }
+}
 
 const rides = rideData as Array<{ driver: string }>;
 
@@ -36,9 +67,12 @@ export function RideDetails({
   screenName = "ride_details",
   pickupLocation = "your pickup",
   destinationName = "your destination",
+  selectedDateTime,
   selectedIndex,
 }: RideDetailsProps) {
   const theme = useTheme();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const contentWidth = width - CONTENT_PADDING;
   const backgroundColor = theme.colors.skeletonBg;
@@ -51,7 +85,12 @@ export function RideDetails({
     return () => clearTimeout(timer);
   }, []);
 
+  const handleDonePress = useCallback(() => {
+    router.replace("/(flow)/(tabs)" as Parameters<typeof router.replace>[0]);
+  }, [router]);
+
   const driverName = getDriverName(selectedIndex);
+  const formattedDateTime = formatDateTime(selectedDateTime);
 
   if (isLoading) {
     return (
@@ -96,6 +135,14 @@ export function RideDetails({
             width={contentWidth * 0.65}
             height={14}
           />
+          <Rect
+            x="32"
+            y="520"
+            rx="4"
+            ry="4"
+            width={contentWidth * 0.5}
+            height={14}
+          />
         </ContentLoader>
       </Container>
     );
@@ -121,7 +168,30 @@ export function RideDetails({
           {driverName} will pick you up at {pickupLocation} for your trip to{" "}
           {destinationName}
         </Text>
+        {formattedDateTime && (
+          <Text
+            testID={`${testID}-datetime`}
+            fontSize="18px"
+            textAlign="center"
+            fontFamily={theme.fonts.regular}
+            color={theme.colors.tagline}
+            style={{ marginTop: 16 }}
+          >
+            {formattedDateTime}
+          </Text>
+        )}
       </ContentSection>
+      <ButtonContainer style={{ paddingBottom: insets.bottom + 24 }}>
+        <DoneButton
+          testID={`${testID}-done-button`}
+          onPress={handleDonePress}
+          accessibilityRole="button"
+          accessibilityLabel="Done"
+          style={({ pressed }) => (pressed ? { opacity: 0.8 } : undefined)}
+        >
+          <DoneButtonLabel>Done</DoneButtonLabel>
+        </DoneButton>
+      </ButtonContainer>
     </Container>
   );
 }
