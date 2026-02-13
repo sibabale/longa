@@ -8,3 +8,4 @@ export { DateTimePick } from './datetime-pick';
 export { RideDetails } from "./ride-details";
 export { SelectRide } from "./select-ride";
 export { Terms } from "./terms";
+export { Trips } from "./trips";
