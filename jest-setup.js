@@ -27,6 +27,11 @@ jest.mock('@sentry/react-native', () => ({
   setTag: jest.fn(),
 }));
 
+jest.mock('@react-native-community/datetimepicker', () => {
+  const { View } = require('react-native');
+  return { __esModule: true, default: View };
+});
+
 jest.mock('react-content-loader/native', () => {
   const { View } = require('react-native');
   return {
@@ -41,8 +46,14 @@ jest.mock('react-content-loader/native', () => {
 const mockRouterPush = jest.fn();
 const mockRouterBack = jest.fn();
 
+jest.mock('expo-notifications', () => ({
+  requestPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+  getPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+}));
+
 jest.mock('expo-router', () => ({
   useRouter: () => ({ back: mockRouterBack, push: mockRouterPush }),
+  useLocalSearchParams: () => ({}),
   router: { push: jest.fn(), back: jest.fn() },
   useSegments: () => [],
   usePathname: () => '/',

@@ -33,10 +33,10 @@ describe("DriverRiderSelector", () => {
     fireEvent.press(screen.getByRole("button", { name: "I am a rider" }));
   });
 
-  it("Rider button navigates to pickup page", () => {
+  it("Rider button navigates to tabs (home) page", () => {
     const expoRouter = require("expo-router");
     renderWithTheme(<DriverRiderSelector />);
     fireEvent.press(screen.getByRole("button", { name: "I am a rider" }));
-    expect(expoRouter.useRouter().push).toHaveBeenCalledWith("/pickup");
+    expect(expoRouter.useRouter().push).toHaveBeenCalledWith("/(flow)/(tabs)");
   });
 });

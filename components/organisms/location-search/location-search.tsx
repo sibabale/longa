@@ -25,9 +25,15 @@ import {
   TitleSection,
 } from "./location-search.styles";
 
+export type PrimaryActionContext = {
+  selected: LocationSuggestionItem | null;
+  searchText: string;
+};
+
 export type PrimaryAction = {
   label: string;
   href: Href;
+  getParams?: (context: PrimaryActionContext) => Record<string, string>;
 };
 
 export type LocationSearchProps = {
@@ -107,7 +113,18 @@ export function LocationSearch({
     capture(`${screenName.toLowerCase()}_primary_action_pressed`, {
       screen: screenName,
     });
-    router.push(primaryAction.href);
+    const params = primaryAction.getParams?.({
+      selected: selectedSuggestion ?? null,
+      searchText,
+    });
+    if (params && Object.keys(params).length > 0) {
+      router.push({
+        pathname: primaryAction.href,
+        params,
+      } as Parameters<typeof router.push>[0]);
+    } else {
+      router.push(primaryAction.href);
+    }
   }, [
     capture,
     primaryAction,

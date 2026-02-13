@@ -1,4 +1,10 @@
 export { WelcomePage } from './welcome-page';
 export { DriverRiderPage } from './driver-rider-page';
+export { HomePage } from './home-page';
 export { DestinationPage } from './destination-page';
 export { PickupPage } from './pickup-page';
+export { DateTimePage } from './datetime-page';
+export { RideDetailsPage } from "./ride-details-page";
+export { SelectRidePage } from "./select-ride-page";
+export { TermsPage } from "./terms-page";
+export { TripsPage } from "./trips-page";

@@ -1,5 +1,10 @@
 export { WelcomeHero } from './welcome-hero';
 export { DriverRiderSelector } from './driver-rider-selector';
+export { Home } from './home';
 export { LocationSearch } from './location-search';
 export { LocationSearchContent } from './location-search-content';
 export { LocationSuggestionsContent } from './location-suggestions-content';
+export { DateTimePick } from './datetime-pick';
+export { RideDetails } from "./ride-details";
+export { SelectRide } from "./select-ride";
+export { Terms } from "./terms";

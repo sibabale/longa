@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
 
 import { Text } from "@/components/atoms";
@@ -21,6 +21,8 @@ export type RideItem = {
 export type LocationSearchContentProps = {
   items: RideItem[];
   testID?: string;
+  selectedIndex?: number;
+  onItemPress?: (index: number) => void;
 };
 
 const carImage = require("@/components/atoms/images/car.png");
@@ -28,14 +30,21 @@ const carImage = require("@/components/atoms/images/car.png");
 export function LocationSearchContent({
   items,
   testID = "location-search-content",
+  selectedIndex,
+  onItemPress,
 }: LocationSearchContentProps) {
   const theme = useTheme();
+  const isSelectable = onItemPress !== undefined;
 
   return (
     <View testID={testID}>
-      {items.map((item, index) => (
-        <View key={index}>
-          <ResultItem testID={`${testID}-item-${index}`}>
+      {items.map((item, index) => {
+        const content = (
+          <ResultItem
+            testID={`${testID}-item-${index}`}
+            $selectable={isSelectable}
+            $selected={isSelectable && selectedIndex === index}
+          >
             <ResultRow>
               <View testID={`${testID}-car-${index}`}>
                 <Image
@@ -71,11 +80,29 @@ export function LocationSearchContent({
               </ResultDetails>
             </ResultRow>
           </ResultItem>
-          {index < items.length - 1 && (
-            <ResultDivider testID={`${testID}-divider-${index}`} />
-          )}
-        </View>
-      ))}
+        );
+
+        return (
+          <View key={index}>
+            {isSelectable ? (
+              <Pressable
+                onPress={() => onItemPress?.(index)}
+                accessibilityRole="button"
+                accessibilityLabel={`Select ${item.driver}, ${item.date} ${item.time}, ${item.price}`}
+                accessibilityState={{ selected: selectedIndex === index }}
+                style={({ pressed }) => (pressed ? { opacity: 0.7 } : undefined)}
+              >
+                {content}
+              </Pressable>
+            ) : (
+              content
+            )}
+            {index < items.length - 1 && (
+              <ResultDivider testID={`${testID}-divider-${index}`} />
+            )}
+          </View>
+        );
+      })}
     </View>
   );
 }

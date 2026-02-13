@@ -75,7 +75,7 @@ export function DriverRiderSelector() {
             label="Rider"
             onPress={() => {
               capture("driver_rider_rider_pressed", { screen: "driver-or-rider" });
-              router.push("/pickup");
+              router.push("/(flow)/(tabs)");
             }}
             accessibilityLabel="I am a rider"
           />
