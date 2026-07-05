@@ -1,0 +1,23 @@
+## Design Context
+
+### Users
+Longa serves both riders and drivers equally. Users are typically coordinating longer-distance trips and need quick clarity, dependable status, and low-friction actions while mobile.
+
+### Brand Personality
+Calm, modern, reliable.
+
+The interface should evoke trust and composure first, while still feeling contemporary and efficient.
+
+### Aesthetic Direction
+Use Uber as the visual and interaction reference point: clean layouts, strong hierarchy, restrained use of color, and predictable controls.
+
+Avoid styles that resemble InDrive's visual direction.
+
+Support light and dark themes with equal parity in quality and coverage.
+
+### Design Principles
+1. Prioritize trust signals: clarity, consistency, and predictable navigation over novelty.
+2. Keep visual language restrained: neutral surfaces, readable typography, and intentional emphasis.
+3. Design for fast mobile decisions: clear CTAs, concise copy, and low cognitive load.
+4. Maintain feature parity across light and dark modes with comparable contrast and polish.
+5. Follow platform and accessibility conventions by default (contrast, tap targets, feedback, reduced surprise).

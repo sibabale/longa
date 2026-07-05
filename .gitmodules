@@ -1,0 +1,6 @@
+[submodule "longa-mobile"]
+	path = longa-mobile
+	url = git@github.com:sibabale/longa-mobile.git
+[submodule "longa-server"]
+	path = longa-server
+	url = git@github.com:sibabale/longa-server.git
